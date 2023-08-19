@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Note;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -14,7 +15,8 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $notes = Note::orderBy('updated_at', 'desc')->get();
+        $user = Auth::user();
+        $notes = $user->notes()->orderBy('updated_at', 'desc')->get();
         return view('dashboard', compact('notes'));
     }
 
@@ -41,7 +43,13 @@ class NoteController extends Controller
             'note' => 'required',
         ]);
 
-        Note::create($request->post());
+        $user = Auth::user();
+        $note = new Note([
+            'title' => $request->input('title'),
+            'note' => $request->input('note'),
+        ]);
+        $user->notes()->save($note);
+
         return redirect()->route('dashboard')->with('success', 'Note has been created successfully.');
     }
 
