@@ -1,66 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel: Notes App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple application to demonstrate CRUD operations in Laravel.
 
-## About Laravel
+## Introduction
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Notes application allows users to create, read, update and delete text notes. It also incorporates user authentication, that allows multiple users to access the application and create their own notes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The application uses Laravel Breeze to implement authentication logic as well as UI. When you use Laravel Breeze, you're integrating its pre-built authentication components into your application. These components include:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   User registration
+-   User login
+-   Password reset
+-   Email verification
 
-## Learning Laravel
+Breeze simplifies the process of setting up these features by providing ready-to-use routes, controllers, views, and other necessary files. This saves you time and effort compared to building these components from scratch.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Software Required
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. PHP 8.1.6 (included in XAMPP version 3.3.0)
+2. MySQL 8.1.6 (included in XAMPP version 3.3.0)
+3. Visual Studio Code / PhpStorm IDE
+4. NodeJS 18.12.1 (or latest)
+5. Composer 2.4.1 (or latest)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Recommended VS Code Extentions
 
-## Laravel Sponsors
+1. PHP Intelephense (Ben Mewburn)
+2. Laravel Artisan (Ryan Naddy)
+3. Laravel Blade Snippets (Winnie Lin)
+4. Laravel Extra Intellisense (amir)
+5. es6-string-html
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Procedure
 
-### Premium Partners
+1.  Create a new Laravel project using command
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+        composer create-project laravel/laravel notes-app
 
-## Contributing
+2.  Update .env file with the following database details.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=notes-app
+        DB_USERNAME=root
+        DB_PASSWORD=
 
-## Code of Conduct
+3.  Migrate the database using the command
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+        php artisan migrate
 
-## Security Vulnerabilities
+    **Note: Make sure to start the Apache and MySQL service from XAMPP control panel before migrating.**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4.  Add Laravel Breeze to the project and install it
 
-## License
+        composer require laravel/breeze --dev
+        php artisan breeze:install
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    You'll be provided options to select the stack. We have used Blade.
+    Next you have option to enable support for dark mode.
+    And last, you can choose the testing framework. We chose PHPUnit.
+
+5.  Now create the required views and components to display/create/update notes.
+
+6.  Create the Note model, migration and controller.
+
+        php artisan make:model Note -mc
+
+    This will create 3 files: the `Note` model, the `create_notes_table` migration and `NoteController` controller.
+
+7.  Define table schema in migration file.
+8.  Define fillable variables, `title` and `note` in `Note` model.
+9.  Define eloquent relationships in `Note` and `User` models. `Note` has a `belongsTo` relationship with `User` model, whereas, `User` has a `hasMany`
+    relationship with `Note` model. This is necessary to bind a note to a user and vice-versa.
+
+10. Define methods in `NoteController` to control the notes. Important methods include:
+
+-   `index()` - Renders home page will all notes created by the signed in user.
+-   `create()` - Renders page that includes form to create a new note.
+-   `store()` - Stores the new note to database.
+-   `show()` - !Not Implemented (Can be used to fetch one of the notes by ID)
+-   `edit()` - Renders the form to edit a note by ID
+-   `update()` - Updates a given note based on ID
+-   `destroy()` - Deletes the note based on ID
+
+11. Define appropriate routes in `web.php` file to carry out above actions.
+12. Make the views dynamic by injecting data on-the-fly using various blade directives.
+
+## Running the application
+
+In a terminal window, run the following:
+
+    npm run dev
+
+In a separate terminal, run the following:
+
+    php artisan serve
+
+Open a web browser and navigate to http://localhost:8000
+
+## Installing and Running this Completed Code
+
+1.  Clone this repository
+
+        git clone https://github.com/ForgottenLight4415/notes-app.git
+
+2.  Go to `notes-app` directory
+
+        cd notes-app
+
+3.  Install composer dependencies
+
+        composer install
+
+4.  Install node dependencies
+
+        npm install
+
+5.  Create `.env` file as it is ignored in `.gitignore` and copy the contents of `.env.example` to it.
+
+6.  Update following fields in `.env` file.
+
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=notes-app
+        DB_USERNAME=root
+        DB_PASSWORD=
+
+7.  Generate application key
+
+        php artisan key:generate
+
+8.  Run the migration
+
+        php artisan migrate
+
+9.  Run the app
+
+    In separate terminals, run the following commands:
+
+        npm run dev
+        php artisan serve
+
+10. Navigate to http://localhost:8000 in a web browser.
+
+11. Explore various features of the app.
